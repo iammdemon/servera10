@@ -35,12 +35,19 @@ async function run() {
 
     
 
-    app.post('/add', async(req, res) => {
-        const newProduct = req.body;
-        console.log(newProduct);
-        const result = await productCollection.insertOne(newProduct);
-        res.send(result);
-    })
+    const corsOptions = {
+      origin: '*', // replace with your frontend domain
+      optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    };
+    
+    // Apply CORS only to specific routes
+    app.post('/add', cors(corsOptions), async (req, res) => {
+      const newProduct = req.body;
+      console.log(newProduct);
+      const result = await productCollection.insertOne(newProduct);
+      res.send(result);
+    });
+    
 
 
 
